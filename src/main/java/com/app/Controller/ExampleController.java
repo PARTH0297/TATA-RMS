@@ -33,4 +33,5 @@ public class ExampleController {
         }
         return ResponseEntity.ok().body(ContentResponseDto.builder().content(contentExtractorService.extractContent(pdfFile)).build());
     }
+
 }
