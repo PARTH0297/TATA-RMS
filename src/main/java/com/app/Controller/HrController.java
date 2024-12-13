@@ -21,4 +21,10 @@ public class HrController {
         // Use the service to get the list of applicants
         return applicantService.getAllApplicants();
     }
+
+    @GetMapping("/applicants/sorted")
+    public List<ApplicantDTO> getApplicantsSortedByCompatibility() {
+        // Use the service to get the list of applicants sorted by compatibility
+        return applicantService.getApplicantsSortedByCompatibility();
+    }
 }
