@@ -1,6 +1,6 @@
 package com.app.Controller;
 
-import com.app.dto.ContentResponseDto;
+
 import com.app.service.ContentExtractorService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -26,12 +26,14 @@ public class ExampleController {
         return "Hello QWERTY";
     }
 
+
     @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<ContentResponseDto> classify(@Valid @NotNull @RequestParam("file") final MultipartFile pdfFile) {
+    public ResponseEntity<Double> classify(@Valid @NotNull @RequestParam("file") final MultipartFile pdfFile) {
         if (pdfFile.isEmpty()) {
             throw new IllegalArgumentException("Uploaded PDF file is empty!");
         }
-        return ResponseEntity.ok().body(ContentResponseDto.builder().content(contentExtractorService.extractContent(pdfFile)).build());
+        Double compatibility = contentExtractorService.extractContent(pdfFile);
+        return ResponseEntity.ok(compatibility);
     }
 
 }

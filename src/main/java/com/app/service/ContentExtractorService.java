@@ -37,7 +37,7 @@ public class ContentExtractorService {
     private static final String STORAGE_DIR = "C:/uploded"; // Specify the directory to store PDFs
     private static final String API_URL = "http://127.0.0.1:5000/match";
 
-    public String extractContent(final MultipartFile multipartFile) {
+    public double extractContent(final MultipartFile multipartFile) {
         String text = "";
         File storedFile = null;
 
@@ -91,11 +91,11 @@ public class ContentExtractorService {
             // Save the content entity to MongoDB
             contentRepository.save(contentEntity);
 
-            return "Content saved successfully with compatibility: " + contentEntity.getCompatibility() + contentEntity.getName() + contentEntity.getFile_name() + contentEntity.getSkills();
+            return  contentEntity.getCompatibility();
 
         } catch (final Exception ex) {
             log.error("Error parsing PDF", ex);
-            return "Error parsing PDF";
+            return 0.0;
         }
     }
 }
