@@ -27,12 +27,16 @@ public class ExampleController {
     }
 
 
-    @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Double> classify(@Valid @NotNull @RequestParam("file") final MultipartFile pdfFile) {
+    @PostMapping(value = "/classify/{JD_number}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Double> classify(
+            @PathVariable("JD_number") Double JD_number, // Accept JD_number as a path variable
+            @Valid @NotNull @RequestParam("file") final MultipartFile pdfFile) {
+
         if (pdfFile.isEmpty()) {
             throw new IllegalArgumentException("Uploaded PDF file is empty!");
         }
-        Double compatibility = contentExtractorService.extractContent(pdfFile);
+
+        Double compatibility = contentExtractorService.extractContent(pdfFile, JD_number);
         return ResponseEntity.ok(compatibility);
     }
 

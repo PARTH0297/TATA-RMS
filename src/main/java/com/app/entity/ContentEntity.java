@@ -22,15 +22,22 @@ public class ContentEntity {
 
     private String name;
 
-    private String file_name;
+    private String __email; // New field for email
 
-    private String content;
+    private Double JD_number; // New field for JD_number
 
     private String JD_Role;
 
-    private Double compatibility;
+    private String content;
 
     private List<String> Skills;
+
+    private Double compatibility;
+
+    private String file_name;
+
+    private CurrentStatus currentStatus; // Use enum for current status
+
 
     // getters and setters
 }

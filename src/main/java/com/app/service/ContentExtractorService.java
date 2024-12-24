@@ -1,6 +1,7 @@
 package com.app.service;
 
 import com.app.entity.ContentEntity;
+import com.app.entity.CurrentStatus;
 import com.app.repository.ContentRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.pdfbox.pdmodel.PDDocument;
@@ -34,22 +35,29 @@ public class ContentExtractorService {
     @Autowired
     private RestTemplate restTemplate;
 
-    private static final String STORAGE_DIR = "C:/uploded"; // Specify the directory to store PDFs
+    private static final String STORAGE_DIR = "C:/uploded"; // Base directory to store PDFs
     private static final String API_URL = "http://127.0.0.1:5000/match";
 
-    public double extractContent(final MultipartFile multipartFile) {
+    public double extractContent(final MultipartFile multipartFile,Double JD_number) {
         String text = "";
         File storedFile = null;
 
         try {
-            // Create the storage directory if it doesn't exist
+            // Create the base storage directory if it doesn't exist
             Path storagePath = Paths.get(STORAGE_DIR);
             if (!Files.exists(storagePath)) {
                 Files.createDirectories(storagePath);
             }
 
-            // Create a file in the storage directory
-            storedFile = new File(storagePath.toFile(), multipartFile.getOriginalFilename());
+            // Create a subdirectory for the JD_number
+            String jdDirectory = String.valueOf(JD_number);
+            Path jdPath = storagePath.resolve(jdDirectory);
+            if (!Files.exists(jdPath)) {
+                Files.createDirectories(jdPath);
+            }
+
+            // Create a file in the JD_number directory
+            storedFile = new File(jdPath.toFile(), multipartFile.getOriginalFilename());
             multipartFile.transferTo(storedFile);
 
             // Extract text from the PDF file
@@ -79,13 +87,16 @@ public class ContentExtractorService {
             // Create ContentEntity object
             ContentEntity contentEntity = ContentEntity.builder()
                     .name(multipartFile.getOriginalFilename().replace(".pdf", "")) // Remove .pdf extension
-                    .file_name(multipartFile.getOriginalFilename())
-                    .content(text)
-                    .JD_Role("full_stack") // Set JD_Role to "full_stack"
-                    .compatibility((Double) matchPercentage.get(0)) // First element as compatibility
+                    .__email(multipartFile.getOriginalFilename().replace(".pdf", "") + "@gmail.com") // Set email
+                    .JD_number(JD_number) // Set JD_number from the URL parameter
+                    .JD_Role("full_stack") // Hardcoded JD_Role
+                    .content(text) // Set the extracted content
                     .Skills(matchPercentage.subList(1, matchPercentage.size()).stream()
                             .map(Object::toString) // Convert each skill to String
                             .toList()) // Collect to List<String>
+                    .compatibility((Double) matchPercentage.get(0)) // First element as compatibility
+                    .currentStatus(CurrentStatus.SCREENING) // Set default current status
+                    .file_name(multipartFile.getOriginalFilename()) // Set the file name
                     .build();
 
             // Save the content entity to MongoDB
