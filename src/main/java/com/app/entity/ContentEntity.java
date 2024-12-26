@@ -24,7 +24,7 @@ public class ContentEntity {
 
     private String __email; // New field for email
 
-    private Double JD_number; // New field for JD_number
+    private String JD_number; // New field for JD_number
 
     private String JD_Role;
 

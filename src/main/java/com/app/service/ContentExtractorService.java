@@ -38,7 +38,7 @@ public class ContentExtractorService {
     private static final String STORAGE_DIR = "C:/uploded"; // Base directory to store PDFs
     private static final String API_URL = "http://127.0.0.1:5000/match";
 
-    public double extractContent(final MultipartFile multipartFile,Double JD_number) {
+    public double extractContent(final MultipartFile multipartFile,String JD_number) {
         String text = "";
         File storedFile = null;
 
@@ -50,7 +50,7 @@ public class ContentExtractorService {
             }
 
             // Create a subdirectory for the JD_number
-            String jdDirectory = String.valueOf(JD_number);
+            String jdDirectory = JD_number;
             Path jdPath = storagePath.resolve(jdDirectory);
             if (!Files.exists(jdPath)) {
                 Files.createDirectories(jdPath);

@@ -28,9 +28,7 @@ public class ExampleController {
 
 
     @PostMapping(value = "/classify/{JD_number}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Double> classify(
-            @PathVariable("JD_number") Double JD_number, // Accept JD_number as a path variable
-            @Valid @NotNull @RequestParam("file") final MultipartFile pdfFile) {
+    public ResponseEntity<Double> classify(@PathVariable("JD_number") String JD_number, @Valid @NotNull @RequestParam("file") final MultipartFile pdfFile) {
 
         if (pdfFile.isEmpty()) {
             throw new IllegalArgumentException("Uploaded PDF file is empty!");
