@@ -36,8 +36,7 @@ public class ContentEntity {
 
     private String file_name;
 
-    private CurrentStatus currentStatus; // Use enum for current status
+    private CurrentStatus currentStatus;
 
 
-    // getters and setters
 }

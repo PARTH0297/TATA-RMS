@@ -96,7 +96,7 @@ public class ApplicantService {
                 CandidateResult result = CandidateResult.builder()
                         .candidateName(candidate.getName())
                         .testKey(candidate.getJD_number())
-                        .score(0) // Set score to 0 or null as per your requirement
+                        .score(0) // Set score to null for now it will be updated later in Quiz service
                         .testStatus(TestStatus.PENDING) // Set status to PENDING
                         .build();
                 candidateResultRepository.save(result); // Save the CandidateResult entity
