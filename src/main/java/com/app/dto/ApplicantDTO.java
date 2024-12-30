@@ -14,6 +14,7 @@ import java.util.List;
 public class ApplicantDTO {
     private String name;
     private String JD_Role;
+    private String JD_number;
     private Double compatibility;
     private List<String> Skills;
 }
