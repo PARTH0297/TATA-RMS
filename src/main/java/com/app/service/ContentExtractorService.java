@@ -95,7 +95,7 @@ public class ContentExtractorService {
                             .map(Object::toString) // Convert each skill to String
                             .toList()) // Collect to List<String>
                     .compatibility((Double) matchPercentage.get(0)) // First element as compatibility
-                    .currentStatus(CurrentStatus.SCREENING) // Set default current status
+                    .currentStatus(CurrentStatus.SCREEN_SELECTED) // Set default current status
                     .file_name(multipartFile.getOriginalFilename()) // Set the file name
                     .build();
 

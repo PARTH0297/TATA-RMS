@@ -90,7 +90,7 @@ public class ApplicantService {
                         .orElse(null);
 
                 if (contentEntity != null) {
-                    contentEntity.setCurrentStatus(CurrentStatus.QUIZ); // Update status to QUIZ
+                    contentEntity.setCurrentStatus(CurrentStatus.MCQ_SCHEDULED); // Update status to QUIZ
                     contentRepository.save(contentEntity); // Save the updated entity
                 }
 
