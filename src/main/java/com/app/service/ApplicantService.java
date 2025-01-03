@@ -64,7 +64,7 @@ public class ApplicantService {
         // Fetch candidates filtered by JD_number
         List<ContentEntity> contentEntities = contentRepository.findAll()
                 .stream()
-                .filter(content -> content.getJD_number().equals(jdNumber))
+                .filter(content -> content.getJD_number().equals(jdNumber) && content.getCurrentStatus() == CurrentStatus.SCREEN_SELECTED)
                 .collect(Collectors.toList());
 
         // Convert to HrCandidateDTO
