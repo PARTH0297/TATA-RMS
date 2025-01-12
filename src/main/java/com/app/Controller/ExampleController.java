@@ -28,14 +28,20 @@ public class ExampleController {
 
 
     @PostMapping(value = "/classify/{JD_number}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Double> classify(@PathVariable("JD_number") String JD_number, @Valid @NotNull @RequestParam("file") final MultipartFile pdfFile) {
+    public ResponseEntity<?> classify(@PathVariable("JD_number") String JD_number, @Valid @NotNull @RequestParam("file") final MultipartFile pdfFile) {
 
         if (pdfFile.isEmpty()) {
-            throw new IllegalArgumentException("Uploaded PDF file is empty!");
+            return ResponseEntity.badRequest().body("Uploaded PDF file is empty!");
         }
 
-        Double compatibility = contentExtractorService.extractContent(pdfFile, JD_number);
-        return ResponseEntity.ok(compatibility);
+        try {
+            String email = contentExtractorService.extractContent(pdfFile, JD_number);
+            return ResponseEntity.ok(email);
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        } catch (Exception e) {
+            return ResponseEntity.status(500).body("An unexpected error occurred.");
+        }
     }
 
 }

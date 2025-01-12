@@ -24,6 +24,8 @@ import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 @Service
 @Slf4j
@@ -38,7 +40,7 @@ public class ContentExtractorService {
     private static final String STORAGE_DIR = "C:/uploded"; // Base directory to store PDFs
     private static final String API_URL = "https://flaskpop.onrender.com/process";
 
-    public double extractContent(final MultipartFile multipartFile,String JD_number) {
+    public String extractContent(final MultipartFile multipartFile,String JD_number) {
         String text = "";
         File storedFile = null;
 
@@ -103,6 +105,17 @@ public class ContentExtractorService {
             String name = (String) responseBody.get("name");
             String email = (String) responseBody.get("email");
 
+            // Validate the email
+            if (!isValidEmail(email)) {
+                // If the email is invalid, extract it from the resume text
+                email = extractEmailFromText(text);
+            }
+
+            // Check if the email is still invalid after extraction
+            if (!isValidEmail(email)) {
+                throw new IllegalArgumentException("Email is not present or invalid.");
+            }
+
             // Create ContentEntity object
             ContentEntity contentEntity = ContentEntity.builder()
                     .name(name) // Set name from API response
@@ -120,11 +133,31 @@ public class ContentExtractorService {
             // Save the content entity to MongoDB
             contentRepository.save(contentEntity);
 
-            return  contentEntity.getCompatibility();
+            return  email;
 
         } catch (final Exception ex) {
             log.error("Error in ContentExtractorService", ex);
-            return 0.0;
+            throw new RuntimeException("An error occurred while processing the file.");
         }
     }
+
+
+    // Method to validate email
+    private boolean isValidEmail(String email) {
+        String emailPattern = "[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}";
+        return email != null && email.matches(emailPattern);
+    }
+
+    // Method to extract email from text
+    private String extractEmailFromText(String text) {
+        String emailPattern = "[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}";
+        Pattern pattern = Pattern.compile(emailPattern);
+        Matcher matcher = pattern.matcher(text);
+        if (matcher.find()) {
+            return matcher.group(); // Return the first found email
+        }
+        return ""; // Return empty if no email found
+    }
 }
+
+
