@@ -37,7 +37,7 @@ public class ApplicantService {
                         .JD_Role(content.getJD_Role())
                         .JD_number(content.getJD_number())
                         .compatibility(content.getCompatibility())
-                        .Skills(content.getSkills())
+                        .Skills(content.getMatchingSkills())
                         .build())
                 .collect(Collectors.toList());
     }
@@ -53,7 +53,7 @@ public class ApplicantService {
                         .JD_Role(content.getJD_Role())
                         .JD_number(content.getJD_number())
                         .compatibility(content.getCompatibility())
-                        .Skills(content.getSkills())
+                        .Skills(content.getMatchingSkills())
                         .build())
                 .sorted(Comparator.comparing(ApplicantDTO::getCompatibility).reversed()) // Sort in descending order
                 .collect(Collectors.toList());
@@ -71,7 +71,7 @@ public class ApplicantService {
         return contentEntities.stream()
                 .map(content -> HrCandidateDTO.builder()
                         .name(content.getName())
-                        .skills(content.getSkills())
+                        .skills(content.getMatchingSkills())
                         .compatibility(content.getCompatibility())
                         .isSelect(false) // Default to false for checkbox
                         .JD_number(content.getJD_number())

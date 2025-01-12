@@ -30,13 +30,16 @@ public class ContentEntity {
 
     private String content;
 
-    private List<String> Skills;
+    //private List<String> Skills;
+
+    private List<String> matchingSkills;  // Matching skills list
+
+    private List<String> missingSkills;   // Missing skills list
 
     private Double compatibility;
 
     private String file_name;
 
     private CurrentStatus currentStatus;
-
 
 }
