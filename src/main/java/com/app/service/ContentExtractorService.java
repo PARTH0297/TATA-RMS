@@ -156,7 +156,7 @@ public class ContentExtractorService {
         if (matcher.find()) {
             return matcher.group(); // Return the first found email
         }
-        return ""; // Return empty if no email found
+        return "";
     }
 }
 

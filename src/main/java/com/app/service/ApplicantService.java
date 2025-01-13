@@ -34,10 +34,13 @@ public class ApplicantService {
         return contentEntities.stream()
                 .map(content -> ApplicantDTO.builder()
                         .name(content.getName())
+                        .__email(content.get__email())
                         .JD_Role(content.getJD_Role())
                         .JD_number(content.getJD_number())
                         .compatibility(content.getCompatibility())
-                        .Skills(content.getMatchingSkills())
+                        .skills(content.getMatchingSkills())
+                        .missingSkills(content.getMissingSkills())
+                        .currentStatus(content.getCurrentStatus())
                         .build())
                 .collect(Collectors.toList());
     }
@@ -50,10 +53,13 @@ public class ApplicantService {
         return contentEntities.stream()
                 .map(content -> ApplicantDTO.builder()
                         .name(content.getName())
+                        .__email(content.get__email())
                         .JD_Role(content.getJD_Role())
                         .JD_number(content.getJD_number())
                         .compatibility(content.getCompatibility())
-                        .Skills(content.getMatchingSkills())
+                        .skills(content.getMatchingSkills())
+                        .missingSkills(content.getMissingSkills())
+                        .currentStatus(content.getCurrentStatus())
                         .build())
                 .sorted(Comparator.comparing(ApplicantDTO::getCompatibility).reversed()) // Sort in descending order
                 .collect(Collectors.toList());
@@ -71,7 +77,9 @@ public class ApplicantService {
         return contentEntities.stream()
                 .map(content -> HrCandidateDTO.builder()
                         .name(content.getName())
+                        .__email(content.get__email())
                         .skills(content.getMatchingSkills())
+                        .missingSkills(content.getMissingSkills())
                         .compatibility(content.getCompatibility())
                         .isSelect(false) // Default to false for checkbox
                         .JD_number(content.getJD_number())
@@ -85,7 +93,10 @@ public class ApplicantService {
                 // Update the currentStatus of the corresponding ContentEntity
                 ContentEntity contentEntity = contentRepository.findAll()
                         .stream()
-                        .filter(content -> content.getName().equals(candidate.getName()) && content.getJD_number().equals(candidate.getJD_number()))
+                        .filter(content -> content.getName().equals(candidate.getName())
+                                && content.getJD_number().equals(candidate.getJD_number())
+                                && content.get__email().equals(candidate.get__email()) )
+
                         .findFirst()
                         .orElse(null);
 

@@ -13,7 +13,9 @@ import java.util.List;
 @Builder
 public class HrCandidateDTO {
     private String name;              // Name of the candidate
+    private String __email;
     private List<String> skills;      // List of skills
+    private List<String> missingSkills;
     private Double compatibility;      // Compatibility score
     private boolean isSelect;          // Checkbox for selection
     private String JD_number;          // Job description number (for filtering)
