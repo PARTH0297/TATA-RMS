@@ -121,7 +121,7 @@ public class ContentExtractorService {
                     .name(name) // Set name from API response
                     .__email(email) // Set email from API response
                     .JD_number(JD_number) // Set JD_number from the URL parameter
-                    .JD_Role("full_stack") // Hardcoded JD_Role
+                    .JD_Role("Full Stack Developer") // Hardcoded JD_Role
                     .content(text) // Set the extracted content
                     .matchingSkills(matchingSkills) // Set matching skills from response
                     .missingSkills(missingSkills)
